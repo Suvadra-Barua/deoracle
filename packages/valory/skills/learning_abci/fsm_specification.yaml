@@ -1,0 +1,31 @@
+alphabet_in:
+- DONE
+- ERROR
+- NO_MAJORITY
+- ROUND_TIMEOUT
+- TRANSACT
+default_start_state: DataPullRound
+final_states:
+- FinishedDecisionMakingRound
+- FinishedTxPreparationRound
+label: LearningAbciApp
+start_states:
+- DataPullRound
+states:
+- DataPullRound
+- DecisionMakingRound
+- FinishedDecisionMakingRound
+- FinishedTxPreparationRound
+- TxPreparationRound
+transition_func:
+    (DataPullRound, DONE): DecisionMakingRound
+    (DataPullRound, NO_MAJORITY): DataPullRound
+    (DataPullRound, ROUND_TIMEOUT): DataPullRound
+    (DecisionMakingRound, DONE): FinishedDecisionMakingRound
+    (DecisionMakingRound, ERROR): FinishedDecisionMakingRound
+    (DecisionMakingRound, NO_MAJORITY): DecisionMakingRound
+    (DecisionMakingRound, ROUND_TIMEOUT): DecisionMakingRound
+    (DecisionMakingRound, TRANSACT): TxPreparationRound
+    (TxPreparationRound, DONE): FinishedTxPreparationRound
+    (TxPreparationRound, NO_MAJORITY): TxPreparationRound
+    (TxPreparationRound, ROUND_TIMEOUT): TxPreparationRound
