@@ -1,8 +1,8 @@
-name: learning_abci
+name: weather_oracle_abci
 author: valory
 version: 0.1.0
 type: skill
-description: A learning skill.
+description: A oracle skill.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
@@ -20,6 +20,7 @@ contracts:
 - valory/gnosis_safe:0.1.0:bafybeihtqcpqthb37msgqabpzcc2xc3l3yzkp5pl2sodeghqyzzzyuevgi
 - valory/erc20:0.1.0:bafybeifen3rx236w2u6snltkwn26pxbxaoyfdjlmatgm33u3dq4gwa63c4
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
+- valory/weather_oracle:0.1.0
 protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
 - valory/ledger_api:1.0.0:bafybeihdk6psr4guxmbcrc26jr2cbgzpd5aljkqvpwo64bvaz7tdti2oni
@@ -29,7 +30,7 @@ skills:
 behaviours:
   main:
     args: {}
-    class_name: LearningRoundBehaviour
+    class_name: WeatherOracleRoundBehaviour
 handlers:
   abci:
     args: {}
@@ -126,27 +127,25 @@ models:
       tx_timeout: 10.0
       validate_timeout: 1205
       service_endpoint_base: https://learning.autonolas.tech/
-      coingecko_price_template: https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}
       coingecko_api_key: null
       transfer_target_address: '0x0000000000000000000000000000000000000000'
       olas_token_address: '0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f'
       multisend_address: '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
     class_name: Params
-  coingecko_specs:
+  weatherstack_specs:
     args:
-      api_id: coingecko
+      api_id: weatherstack
       headers:
         Accept: application/json
       method: GET
       parameters:
-        ids: autonolas
-        vs_currencies: usd
-        x_cg_demo_api_key: null
-      response_key: autonolas
+        access_key: null
+        query: New York
+      response_key: current
       response_type: dict
       retries: 5
-      url: https://api.coingecko.com/api/v3/simple/price
-    class_name: CoingeckoSpecs
+      url: https://api.weatherstack.com/current
+    class_name: WeatherstackSpecs
   requests:
     args: {}
     class_name: Requests

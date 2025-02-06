@@ -65,6 +65,11 @@ def main() -> None:
                 "transfer_target_address"
             ] = f"${{str:{os.getenv('TRANSFER_TARGET_ADDRESS')}}}"  # type: ignore
 
+        if os.getenv("WEATHERSTACK_PARAMETERS"):
+
+            # WeatherStack parameters (ApiSpecs) 
+            config[-1]["models"]["weatherstack_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('WEATHERSTACK_PARAMETERS')}}}"
+            
     with open(Path("learning_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)
 

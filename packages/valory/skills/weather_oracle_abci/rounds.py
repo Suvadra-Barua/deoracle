@@ -34,15 +34,15 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     get_name,
 )
-from packages.valory.skills.learning_abci.payloads import (
-    DataPullPayload,
+from packages.valory.skills.weather_oracle_abci.payloads import (
     DecisionMakingPayload,
-    TxPreparationPayload,
+    OracleDataPullPayload,
+    OracleTxPreparationPayload,
 )
 
 
 class Event(Enum):
-    """LearningAbciApp Events"""
+    """WeatherOracleAbciApp Events"""
 
     DONE = "done"
     ERROR = "error"
@@ -64,28 +64,8 @@ class SynchronizedData(BaseSynchronizedData):
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def price(self) -> Optional[float]:
-        """Get the token price."""
-        return self.db.get("price", None)
-
-    @property
-    def price_ipfs_hash(self) -> Optional[str]:
-        """Get the price_ipfs_hash."""
-        return self.db.get("price_ipfs_hash", None)
-
-    @property
-    def native_balance(self) -> Optional[float]:
-        """Get the native balance."""
-        return self.db.get("native_balance", None)
-
-    @property
-    def erc20_balance(self) -> Optional[float]:
-        """Get the erc20 balance."""
-        return self.db.get("erc20_balance", None)
-
-    @property
     def participant_to_data_round(self) -> DeserializedCollection:
-        """Agent to payload mapping for the DataPullRound."""
+        """Agent to payload mapping for the OracleDataPullRound."""
         return self._get_deserialized("participant_to_data_round")
 
     @property
@@ -103,11 +83,30 @@ class SynchronizedData(BaseSynchronizedData):
         """Get the round that submitted a tx to transaction_settlement_abci."""
         return str(self.db.get_strict("tx_submitter"))
 
+    @property
+    def temperature(self) -> Optional[float]:
+        """Get the temperature."""
+        return self.db.get("temperature", None)
 
-class DataPullRound(CollectSameUntilThresholdRound):
-    """DataPullRound"""
+    @property
+    def humidity(self) -> Optional[int]:
+        """Get the humidity percentage."""
+        return self.db.get("humidity", None)
 
-    payload_class = DataPullPayload
+    @property
+    def wind_speed(self) -> Optional[float]:
+        """Get the wind speed."""
+        return self.db.get("wind_speed", None)
+
+    @property
+    def weather_ipfs_hash(self) -> Optional[str]:
+        """Get the weather data IPFS hash."""
+        return self.db.get("weather_ipfs_hash", None)
+
+class OracleDataPullRound(CollectSameUntilThresholdRound):
+    """OracleDataPullRound"""
+
+    payload_class = OracleDataPullPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
@@ -116,17 +115,13 @@ class DataPullRound(CollectSameUntilThresholdRound):
     # Collection key specifies where in the synchronized data the agento to payload mapping will be stored
     collection_key = get_name(SynchronizedData.participant_to_data_round)
 
-    # Selection key specifies how to extract all the different objects from each agent's payload
-    # and where to store it in the synchronized data. Notice that the order follows the same order
-    # from the payload class.
+    # Selection keys for extracting specific fields
     selection_key = (
-        get_name(SynchronizedData.price),
-        get_name(SynchronizedData.price_ipfs_hash),
-        get_name(SynchronizedData.native_balance),
-        get_name(SynchronizedData.erc20_balance),
+        get_name(SynchronizedData.temperature),
+        get_name(SynchronizedData.humidity),
+        get_name(SynchronizedData.wind_speed),
+        get_name(SynchronizedData.weather_ipfs_hash),
     )
-
-    # Event.ROUND_TIMEOUT  # this needs to be referenced for static checkers
 
 
 class DecisionMakingRound(CollectSameUntilThresholdRound):
@@ -155,10 +150,10 @@ class DecisionMakingRound(CollectSameUntilThresholdRound):
     # Event.DONE, Event.ERROR, Event.TRANSACT, Event.ROUND_TIMEOUT  # this needs to be referenced for static checkers
 
 
-class TxPreparationRound(CollectSameUntilThresholdRound):
-    """TxPreparationRound"""
+class OracleTxPreparationRound(CollectSameUntilThresholdRound):
+    """OracleTxPreparationRound"""
 
-    payload_class = TxPreparationPayload
+    payload_class = OracleTxPreparationPayload
     synchronized_data_class = SynchronizedData
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
@@ -183,14 +178,14 @@ class FinishedTxPreparationRound(DegenerateRound):
 class LearningAbciApp(AbciApp[Event]):
     """LearningAbciApp"""
 
-    initial_round_cls: AppState = DataPullRound
+    initial_round_cls: AppState = OracleDataPullRound
     initial_states: Set[AppState] = {
-        DataPullRound,
+        OracleDataPullRound,
     }
     transition_function: AbciAppTransitionFunction = {
-        DataPullRound: {
-            Event.NO_MAJORITY: DataPullRound,
-            Event.ROUND_TIMEOUT: DataPullRound,
+        OracleDataPullRound: {
+            Event.NO_MAJORITY: OracleDataPullRound,
+            Event.ROUND_TIMEOUT: OracleDataPullRound,
             Event.DONE: DecisionMakingRound,
         },
         DecisionMakingRound: {
@@ -198,11 +193,11 @@ class LearningAbciApp(AbciApp[Event]):
             Event.ROUND_TIMEOUT: DecisionMakingRound,
             Event.DONE: FinishedDecisionMakingRound,
             Event.ERROR: FinishedDecisionMakingRound,
-            Event.TRANSACT: TxPreparationRound,
+            Event.TRANSACT: OracleTxPreparationRound,
         },
-        TxPreparationRound: {
-            Event.NO_MAJORITY: TxPreparationRound,
-            Event.ROUND_TIMEOUT: TxPreparationRound,
+        OracleTxPreparationRound: {
+            Event.NO_MAJORITY: OracleTxPreparationRound,
+            Event.ROUND_TIMEOUT: OracleTxPreparationRound,
             Event.DONE: FinishedTxPreparationRound,
         },
         FinishedDecisionMakingRound: {},
@@ -215,7 +210,7 @@ class LearningAbciApp(AbciApp[Event]):
     event_to_timeout: EventToTimeout = {}
     cross_period_persisted_keys: FrozenSet[str] = frozenset()
     db_pre_conditions: Dict[AppState, Set[str]] = {
-        DataPullRound: set(),
+        OracleDataPullRound: set(),
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedDecisionMakingRound: set(),

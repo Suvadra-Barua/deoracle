@@ -26,13 +26,14 @@ from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
 @dataclass(frozen=True)
-class DataPullPayload(BaseTxPayload):
-    """Represent a transaction payload for the DataPullRound."""
+class OracleDataPullPayload(BaseTxPayload):
+    """Represent a transaction payload for the OracleDataPullRound."""
 
-    price: Optional[float]
-    price_ipfs_hash: Optional[str]
-    native_balance: Optional[float]
-    erc20_balance: Optional[float]
+    temperature: Optional[float]
+    humidity: Optional[int]
+    wind_speed: Optional[float]
+    weather_ipfs_hash: Optional[str]
+
 
 
 @dataclass(frozen=True)
@@ -43,8 +44,8 @@ class DecisionMakingPayload(BaseTxPayload):
 
 
 @dataclass(frozen=True)
-class TxPreparationPayload(BaseTxPayload):
-    """Represent a transaction payload for the TxPreparationRound."""
+class OracleTxPreparationPayload(BaseTxPayload):
+    """Represent a transaction payload for the OracleTxPreparationRound."""
 
     tx_submitter: Optional[str] = None
     tx_hash: Optional[str] = None

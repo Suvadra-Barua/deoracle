@@ -215,3 +215,13 @@ models:
       response_type: dict
       retries: 5
       url: https://api.coingecko.com/api/v3/simple/price
+  weatherstack_specs:
+    args:
+      api_id: weatherstack
+      headers: ${dict:{"Content-Type":"application/json"}}
+      method: GET
+      parameters: ${dict:{"access_key":"null","query":"New York"}}
+      response_key: current
+      response_type: dict
+      retries: 5
+      url: https://api.weatherstack.com/current
