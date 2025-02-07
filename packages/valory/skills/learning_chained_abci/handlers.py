@@ -37,7 +37,7 @@ from packages.valory.skills.abstract_round_abci.handlers import (
 from packages.valory.skills.abstract_round_abci.handlers import (
     TendermintHandler as BaseTendermintHandler,
 )
-from packages.valory.skills.learning_abci.handlers import HttpHandler as BaseHttpHandler
+from packages.valory.skills.weather_oracle_abci.handlers import HttpHandler as BaseHttpHandler
 
 
 ABCIHandler = BaseABCIRoundHandler

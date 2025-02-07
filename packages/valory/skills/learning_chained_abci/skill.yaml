@@ -7,12 +7,12 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeihu5y5llhaefw32jodf2nc2x5tig7cfo2fallbodv6vodczunpbve
-  behaviours.py: bafybeiagipms5gfebqysx5sl4dhydppceqv4aga64ibqgygqczbh4imyxu
-  composition.py: bafybeib64i3h7vmimsjflc37j4s5feipiar7hib5ixdwbadphjezq5z4cu
+  behaviours.py: bafybeieh33qfi4vunqiaxel4kuputoduwc6rjeu5l3b6lewdsbbxod66se
+  composition.py: bafybeifq3m5xscqtjxo32ommd5v2t7a2noic3j2q25jdgdt4qhqmra54li
   dialogues.py: bafybeiakqfqcpg7yrxt4bsyernhy5p77tci4qhmgqqjqi3ttx7zk6sklca
-  fsm_specification.yaml: bafybeigi2crcl5htovzx6u3rn7ti67ddmneog3w2iybcnjpbdvjegl2jfu
-  handlers.py: bafybeicru4lanvektcppxpecul4zwjfuaxseopxtsxrfzmbfaz5qk4m67q
-  models.py: bafybeico4qysu652lznxwxfamsu43d7llstplca5eqcwnmwg66fxmzt4qe
+  fsm_specification.yaml: bafybeie6fdtsqsvvt6wkflej4gvszxzkp2t4ppe52o24fez57bd4jole2m
+  handlers.py: bafybeigldyf7voz2lttmmz7gunrr6yamgruzvr2trvbjxcnqxw2avositu
+  models.py: bafybeih3d7juvkbw4exsktugvji6nbil2f7yuzylwgzolrvagrgrev6tsq
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -22,7 +22,7 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq
-- valory/learning_abci:0.1.0:bafybeihnsuuw2qnlq37fpxhhueasi2ty5ukqobhtdcwgjl52q6n574xusi
+- valory/weather_oracle_abci:0.1.0:bafybeicg752uienwd7np7tghzqgsvndhu5tjyea3iaqmbpprt7tn6ruw4u
 - valory/transaction_settlement_abci:0.1.0:bafybeifmgmwdkx4esemxjacjwzqkqymkuklb5nehkwqkx7v335fllgswcq
 behaviours:
   main:
@@ -155,6 +155,20 @@ models:
       retries: 5
       url: https://api.coingecko.com/api/v3/simple/price
     class_name: CoingeckoSpecs
+  weatherstack_specs:
+    args:
+      api_id: weatherstack
+      headers:
+        Accept: application/json
+      method: GET
+      parameters:
+        access_key: null
+        query: New York
+      response_key: current
+      response_type: dict
+      retries: 5
+      url: https://api.weatherstack.com/current
+    class_name: WeatherstackSpecs
   randomness_api:
     args:
       api_id: cloudflare

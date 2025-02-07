@@ -6,10 +6,10 @@ description: Weather oracle contract
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeifmfma6rglvpa22odtozyosnp5mwljum64utxip2wgmezuhnjjjyi
-  __init__.py: bafybeif5vpc3dfrlxlch7brbhmdwksabyzddpfqgm56vdbbkek3t3br6ke
-  build/WeatherOracle.json: bafybeiemn5b5nszuss7xj6lmvmjuendltp6wz7ubihdvd7c6wqw4bohbpa
-  contract.py: bafybeidewckxjj6vaz7sphkpnjgmsyhi7v7hijaz44yu7vbsnv3znqj3wm
+  README.md: bafybeicspx527d4l5nrsygf7guuyra3x2mbazynfjhtpmqw7tn32kz5xym
+  __init__.py: bafybeig4iszvwcqmpyomlz4fu4yisawp4oqv4ypq2ho22gwd4goexj4rsm
+  build/WeatherOracle.json: bafybeihrodzhybub5mequsgbhw2unykfjtpd3h7fk7wpd6w44aiaijvyau
+  contract.py: bafybeihzibiu2ph3yn7njghpcjlkhy4x56ap4kusawskjzgnq5pe676s3a
 fingerprint_ignore_patterns: []
 contracts: []
 class_name: WeatherOracle

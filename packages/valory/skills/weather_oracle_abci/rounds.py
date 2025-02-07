@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains the rounds of LearningAbciApp."""
+"""This package contains the rounds of WeatherOracleAbciApp."""
 
 from enum import Enum
 from typing import Dict, FrozenSet, Optional, Set, Tuple

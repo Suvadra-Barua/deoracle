@@ -1,10 +1,12 @@
 {
     "dev": {
         "contract/valory/erc20/0.1.0": "bafybeifen3rx236w2u6snltkwn26pxbxaoyfdjlmatgm33u3dq4gwa63c4",
-        "skill/valory/learning_abci/0.1.0": "bafybeihnsuuw2qnlq37fpxhhueasi2ty5ukqobhtdcwgjl52q6n574xusi",
-        "skill/valory/learning_chained_abci/0.1.0": "bafybeic7oyxlh4ceyy7zejxym2xu7zumdasglvruhmmch2weguf5zye4lq",
-        "agent/valory/learning_agent/0.1.0": "bafybeiehr6tqe6nnbdfmvx4q3tkk5fusxhku4q7q7da7o3an47toaevg2q",
-        "service/valory/learning_service/0.1.0": "bafybeifzkateyurcmdixqybjvmczzuzpisat7ldczaf464azyu7m7hanvq"
+        "contract/valory/weather_oracle/0.1.0": "bafybeicgyt4s3tdx3hcfz6du4q74kryrmzkcmbp5kmbvnmj2aheukukwhm",
+        "contract/valory/storage/0.1.0": "bafybeidnml27p6n4xywnhjfd6o6st3whjfbocvs2z4azqorqj3jg55squy",
+        "skill/valory/weather_oracle_abci/0.1.0": "bafybeicg752uienwd7np7tghzqgsvndhu5tjyea3iaqmbpprt7tn6ruw4u",
+        "skill/valory/learning_chained_abci/0.1.0": "bafybeicd6mweczgnsks6degjgfgme7oilgmuki2pvky4ljodgbqjdnymzi",
+        "agent/valory/learning_agent/0.1.0": "bafybeif3vbwio6a6uxr6coxakrnpvmnu3vxrcqfsdps7ktrm4jml4y7zxy",
+        "service/valory/learning_service/0.1.0": "bafybeidgymvis5vbqr7qouzl2qwian7sf6veuepxboeye2yjic4zdgvvqe"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",

@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeid42pdrf6qrohedylj4ijrss236ai6geqgf3he44huowiuf7pl464
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeiehr6tqe6nnbdfmvx4q3tkk5fusxhku4q7q7da7o3an47toaevg2q
+agent: valory/learning_agent:0.1.0:bafybeif3vbwio6a6uxr6coxakrnpvmnu3vxrcqfsdps7ktrm4jml4y7zxy
 number_of_agents: 4
 deployment:
   agent:
@@ -217,7 +217,6 @@ extra:
         response_type: dict
         retries: 5
         url: https://api.weatherstack.com/current
-    
 3:
   models:
     benchmark_tool:

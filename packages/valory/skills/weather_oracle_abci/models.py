@@ -29,7 +29,7 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.learning_abci.rounds import LearningAbciApp
+from packages.valory.skills.weather_oracle_abci.rounds import LearningAbciApp
 
 
 class SharedState(BaseSharedState):

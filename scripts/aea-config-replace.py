@@ -41,14 +41,21 @@ def main() -> None:
             ] = f"${{str:{os.getenv('GNOSIS_LEDGER_RPC')}}}"
 
         # Params
-        if os.getenv("COINGECKO_API_KEY"):
-            # Coingecko API key (params)
-            config[-1]["models"]["params"]["args"][
-                "coingecko_api_key"
-            ] = f"${{str:{os.getenv('COINGECKO_API_KEY')}}}"  # type: ignore
+        # if os.getenv("COINGECKO_API_KEY"):
+        #     # Coingecko API key (params)
+        #     config[-1]["models"]["params"]["args"][
+        #         "coingecko_api_key"
+        #     ] = f"${{str:{os.getenv('COINGECKO_API_KEY')}}}"  # type: ignore
 
-            # Coingecko API key (ApiSpecs)
-            config[-1]["models"]["coingecko_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('COINGECKO_PARAMETERS')}}}"  # type: ignore
+        #     # Coingecko API key (ApiSpecs)
+        #     config[-1]["models"]["coingecko_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('COINGECKO_PARAMETERS')}}}"  # type: ignore
+
+       
+
+        if os.getenv("WEATHERSTACK_PARAMETERS"):
+
+            # WeatherStack parameters (ApiSpecs) 
+            config[-1]["models"]["weatherstack_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('WEATHERSTACK_PARAMETERS')}}}"
 
             # ALL_PARTICIPANTS
             config[-1]["models"]["params"]["args"]["setup"][
@@ -65,11 +72,6 @@ def main() -> None:
                 "transfer_target_address"
             ] = f"${{str:{os.getenv('TRANSFER_TARGET_ADDRESS')}}}"  # type: ignore
 
-        if os.getenv("WEATHERSTACK_PARAMETERS"):
-
-            # WeatherStack parameters (ApiSpecs) 
-            config[-1]["models"]["weatherstack_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('WEATHERSTACK_PARAMETERS')}}}"
-            
     with open(Path("learning_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)
 

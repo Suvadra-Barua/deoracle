@@ -79,7 +79,7 @@ METADATA_FILENAME = "metadata.json"
 
 
 class LearningBaseBehaviour(BaseBehaviour, ABC):  # pylint: disable=too-many-ancestors
-    """Base behaviour for the learning_abci behaviours."""
+    """Base behaviour for the weather_oracle_abci behaviours."""
 
     @property
     def params(self) -> Params:

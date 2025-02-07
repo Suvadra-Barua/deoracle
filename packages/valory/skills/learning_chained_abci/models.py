@@ -26,12 +26,13 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.tests.data.dummy_abci.models import (
     RandomnessApi as BaseRandomnessApi,
 )
-from packages.valory.skills.learning_abci.models import (
+from packages.valory.skills.weather_oracle_abci.models import (
     CoingeckoSpecs as BaseCoingeckoSpecs,
+    WeatherstackSpecs as BaseWeatherstackSpecs
 )
-from packages.valory.skills.learning_abci.models import Params as LearningParams
-from packages.valory.skills.learning_abci.models import SharedState as BaseSharedState
-from packages.valory.skills.learning_abci.rounds import Event as LearningEvent
+from packages.valory.skills.weather_oracle_abci.models import Params as LearningParams
+from packages.valory.skills.weather_oracle_abci.models import SharedState as BaseSharedState
+from packages.valory.skills.weather_oracle_abci.rounds import Event as LearningEvent
 from packages.valory.skills.learning_chained_abci.composition import (
     LearningChainedSkillAbciApp,
 )
@@ -78,4 +79,7 @@ class Params(  # pylint: disable=too-many-ancestors
 
 
 class CoingeckoSpecs(BaseCoingeckoSpecs):
+    """A model that wraps ApiSpecs for Coingecko API."""
+
+class WeatherstackSpecs(BaseWeatherstackSpecs):
     """A model that wraps ApiSpecs for Coingecko API."""
