@@ -25,7 +25,6 @@ from pathlib import Path
 from tempfile import mkdtemp
 from typing import Dict, Generator, Optional, Set, Type, cast
 
-from packages.valory.contracts.erc20.contract import ERC20
 from packages.valory.contracts.gnosis_safe.contract import (
     GnosisSafeContract,
     SafeOperation,
@@ -284,89 +283,31 @@ class DecisionMakingBehaviour(
     def get_next_event(self) -> Generator[None, None, str]:
         """Get the next event: decide whether ot transact or not based on some data."""
 
-        # This method showcases how to make decisions based on conditions.
-        # This is just a dummy implementation.
-
-        # Get the latest block number from the chain
-        block_number = yield from self.get_block_number()
-
-        # Get the balance we calculated in the previous round
-        native_balance = self.synchronized_data.native_balance
-
-        # We stored the price using two approaches: synchronized_data and IPFS
-        # Similarly, we retrieve using the corresponding ways
-        token_price = self.synchronized_data.price
-        token_price = yield from self.get_price_from_ipfs()
-
-        # If we fail to get the block number, we send the ERROR event
-        if not block_number:
-            self.context.logger.info("Block number is None. Sending the ERROR event...")
-            return Event.ERROR.value
-
-        # If we fail to get the token price, we send the ERROR event
-        if not token_price:
-            self.context.logger.info("Token price is None. Sending the ERROR event...")
-            return Event.ERROR.value
+        weather_data = yield from self.get_weather_data_from_ipfs()
 
         # If we fail to get the token balance, we send the ERROR event
-        if not native_balance:
+        if not weather_data:
             self.context.logger.info(
-                "Native balance is None. Sending the ERROR event..."
+                "Weather data is None. Sending the ERROR event..."
             )
             return Event.ERROR.value
 
-        # Make a decision based on the balance's last number
-        last_number = int(str(native_balance)[-1])
-
-        # If the number is even, we transact
-        if last_number % 2 == 0:
-            self.context.logger.info("Number is even. Transacting.")
-            return Event.TRANSACT.value
-
-        # Otherwise we send the DONE event
-        self.context.logger.info("Number is odd. Not transacting.")
         return Event.DONE.value
 
-    def get_block_number(self) -> Generator[None, None, Optional[int]]:
-        """Get the block number"""
-
-        # Call the ledger connection (equivalent to web3.py)
-        ledger_api_response = yield from self.get_ledger_api_response(
-            performative=LedgerApiMessage.Performative.GET_STATE,
-            ledger_callable="get_block_number",
-            chain_id=GNOSIS_CHAIN_ID,
-        )
-
-        # Check for errors on the response
-        if ledger_api_response.performative != LedgerApiMessage.Performative.STATE:
-            self.context.logger.error(
-                f"Error while retrieving block number: {ledger_api_response}"
-            )
-            return None
-
-        # Extract and return the block number
-        block_number = cast(
-            int, ledger_api_response.state.body["get_block_number_result"]
-        )
-
-        self.context.logger.error(f"Got block number: {block_number}")
-
-        return block_number
-
-    def get_price_from_ipfs(self) -> Generator[None, None, Optional[dict]]:
+    def get_weather_data_from_ipfs(self) -> Generator[None, None, Optional[dict]]:
         """Load the price data from IPFS"""
-        ipfs_hash = self.synchronized_data.price_ipfs_hash
-        price = yield from self.get_from_ipfs(
+        ipfs_hash = self.synchronized_data.weather_ipfs_hash
+        weather = yield from self.get_from_ipfs(
             ipfs_hash=ipfs_hash, filetype=SupportedFiletype.JSON
         )
-        self.context.logger.error(f"Got price from IPFS: {price}")
-        return price
+        self.context.logger.error(f"Got price from IPFS: {weather}")
+        return weather
 
 
-class TxPreparationBehaviour(
+class OracleTxPreparationBehaviour(
     LearningBaseBehaviour
 ):  # pylint: disable=too-many-ancestors
-    """TxPreparationBehaviour"""
+    """OracleTxPreparationBehaviour"""
 
     matching_round: Type[AbstractRound] = OracleTxPreparationRound
 
@@ -388,97 +329,29 @@ class TxPreparationBehaviour(
             yield from self.wait_until_round_end()
 
         self.set_done()
+    
+    def get_update_weather_tx_data(self) -> Generator[None, None, Optional[str]]:
+        """Get the update weather transaction data"""
 
-    def get_tx_hash(self) -> Generator[None, None, Optional[str]]:
-        """Get the transaction hash"""
+        self.context.logger.info("Preparing Weather Update transaction")
+        
+        ipfs_hash = self.synchronized_data.weather_ipfs_hash
 
-        # Here want to showcase how to prepare different types of transactions.
-        # Depending on the timestamp's last number, we will make a native transaction,
-        # an ERC20 transaction or both.
-
-        # All transactions need to be sent from the Safe controlled by the agents.
-
-        # Again, make a decision based on the timestamp (on its last number)
-        now = int(self.get_sync_timestamp())
-        self.context.logger.info(f"Timestamp is {now}")
-        last_number = int(str(now)[-1])
-
-        # Native transaction (Safe -> recipient)
-        if last_number in [0, 1, 2, 3]:
-            self.context.logger.info("Preparing a native transaction")
-            tx_hash = yield from self.get_native_transfer_safe_tx_hash()
-            return tx_hash
-
-        # ERC20 transaction (Safe -> recipient)
-        if last_number in [4, 5, 6]:
-            self.context.logger.info("Preparing an ERC20 transaction")
-            tx_hash = yield from self.get_erc20_transfer_safe_tx_hash()
-            return tx_hash
-
-        # Multisend transaction (both native and ERC20) (Safe -> recipient)
-        self.context.logger.info("Preparing a multisend transaction")
-        tx_hash = yield from self.get_multisend_safe_tx_hash()
-        return tx_hash
-
-    def get_native_transfer_safe_tx_hash(self) -> Generator[None, None, Optional[str]]:
-        """Prepare a native safe transaction"""
-
-        # Transaction data
-        # This method is not a generator, therefore we don't use yield from
-        data = self.get_native_transfer_data()
-
-        # Prepare safe transaction
-        safe_tx_hash = yield from self._build_safe_tx_hash(**data)
-        self.context.logger.info(f"Native transfer hash is {safe_tx_hash}")
-
-        return safe_tx_hash
-
-    def get_native_transfer_data(self) -> Dict:
-        """Get the native transaction data"""
-        # Send 1 wei to the recipient
-        data = {VALUE_KEY: 1, TO_ADDRESS_KEY: self.params.transfer_target_address}
-        self.context.logger.info(f"Native transfer data is {data}")
-        return data
-
-    def get_erc20_transfer_safe_tx_hash(self) -> Generator[None, None, Optional[str]]:
-        """Prepare an ERC20 safe transaction"""
-
-        # Transaction data
-        data_hex = yield from self.get_erc20_transfer_data()
-
-        # Check for errors
-        if data_hex is None:
-            return None
-
-        # Prepare safe transaction
-        safe_tx_hash = yield from self._build_safe_tx_hash(
-            to_address=self.params.transfer_target_address, data=bytes.fromhex(data_hex)
-        )
-
-        self.context.logger.info(f"ERC20 transfer hash is {safe_tx_hash}")
-
-        return safe_tx_hash
-
-    def get_erc20_transfer_data(self) -> Generator[None, None, Optional[str]]:
-        """Get the ERC20 transaction data"""
-
-        self.context.logger.info("Preparing ERC20 transfer transaction")
-
-        # Use the contract api to interact with the ERC20 contract
+        # Use the contract api to interact with the WeatherOracle contract
         response_msg = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
-            contract_address=self.params.olas_token_address,
-            contract_id=str(ERC20.contract_id),
-            contract_callable="build_transfer_tx",
-            recipient=self.params.transfer_target_address,
-            amount=1,
+            contract_address=self.params.weather_oracle_address,
+            contract_id=str(WeatherOracle.contract_id),
+            contract_callable="build_update_weather_tx",
+            request_id=1,
+            ipfs_hash=ipfs_hash,
             chain_id=GNOSIS_CHAIN_ID,
         )
 
         # Check that the response is what we expect
         if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
             self.context.logger.error(
-                f"Error while retrieving the balance: {response_msg}"
+                f"Error while preparing response message for updating weather: {response_msg}"
             )
             return None
 
@@ -494,8 +367,16 @@ class TxPreparationBehaviour(
             return None
 
         data_hex = data_bytes.hex()
-        self.context.logger.info(f"ERC20 transfer data is {data_hex}")
+        self.context.logger.info(f"Update weather transaction data is {data_hex}")
         return data_hex
+
+    def get_tx_hash(self) -> Generator[None, None, Optional[str]]:
+        """Get the transaction hash"""
+
+        # Multisend transaction (Only Update Weather) (Safe -> recipient)
+        self.context.logger.info("Preparing a multisend transaction")
+        tx_hash = yield from self.get_multisend_safe_tx_hash()
+        return tx_hash
 
     def get_multisend_safe_tx_hash(self) -> Generator[None, None, Optional[str]]:
         """Get a multisend transaction hash"""
@@ -505,29 +386,18 @@ class TxPreparationBehaviour(
 
         multi_send_txs = []
 
-        # Native transfer
-        native_transfer_data = self.get_native_transfer_data()
-        multi_send_txs.append(
-            {
-                "operation": MultiSendOperation.CALL,
-                "to": self.params.transfer_target_address,
-                "value": native_transfer_data[VALUE_KEY],
-                # No data key in this transaction, since it is a native transfer
-            }
-        )
+        # Update weather
+        update_weather_tx_data_hex = yield from self.get_update_weather_tx_data()
 
-        # ERC20 transfer
-        erc20_transfer_data_hex = yield from self.get_erc20_transfer_data()
-
-        if erc20_transfer_data_hex is None:
+        if update_weather_tx_data_hex is None:
             return None
 
         multi_send_txs.append(
             {
                 "operation": MultiSendOperation.CALL,
-                "to": self.params.olas_token_address,
+                "to": self.params.weather_oracle_address,
                 "value": ZERO_VALUE,
-                "data": bytes.fromhex(erc20_transfer_data_hex),
+                "data": bytes.fromhex(update_weather_tx_data_hex),
             }
         )
 
@@ -638,5 +508,5 @@ class WeatherOracleRoundBehaviour(AbstractRoundBehaviour):
         RequestDataPullBehaviour,
         OracleDataPullBehaviour,
         DecisionMakingBehaviour,
-        TxPreparationBehaviour,
+        OracleTxPreparationBehaviour,
     ]

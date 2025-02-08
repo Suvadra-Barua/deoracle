@@ -25,11 +25,11 @@ transition_func:
     (OracleDataPullRound, DONE): DecisionMakingRound
     (OracleDataPullRound, NO_MAJORITY): OracleDataPullRound
     (OracleDataPullRound, ROUND_TIMEOUT): OracleDataPullRound
-    (DecisionMakingRound, DONE): FinishedDecisionMakingRound
+    (DecisionMakingRound, DONE): OracleTxPreparationRound
     (DecisionMakingRound, ERROR): FinishedDecisionMakingRound
     (DecisionMakingRound, NO_MAJORITY): DecisionMakingRound
     (DecisionMakingRound, ROUND_TIMEOUT): DecisionMakingRound
-    (DecisionMakingRound, TRANSACT): TxPreparationRound
-    (TxPreparationRound, DONE): FinishedTxPreparationRound
-    (TxPreparationRound, NO_MAJORITY): TxPreparationRound
-    (TxPreparationRound, ROUND_TIMEOUT): TxPreparationRound
+    # (DecisionMakingRound, TRANSACT): OracleTxPreparationRound
+    (OracleTxPreparationRound, DONE): FinishedTxPreparationRound
+    (OracleTxPreparationRound, NO_MAJORITY): OracleTxPreparationRound
+    (OracleTxPreparationRound, ROUND_TIMEOUT): OracleTxPreparationRound

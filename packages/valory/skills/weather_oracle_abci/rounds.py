@@ -224,9 +224,9 @@ class LearningAbciApp(AbciApp[Event]):
         DecisionMakingRound: {
             Event.NO_MAJORITY: DecisionMakingRound,
             Event.ROUND_TIMEOUT: DecisionMakingRound,
-            Event.DONE: FinishedDecisionMakingRound,
+            Event.DONE: OracleTxPreparationRound,
             Event.ERROR: FinishedDecisionMakingRound,
-            Event.TRANSACT: OracleTxPreparationRound,
+            # Event.TRANSACT: OracleTxPreparationRound,
         },
         OracleTxPreparationRound: {
             Event.NO_MAJORITY: OracleTxPreparationRound,
