@@ -19,7 +19,7 @@ contracts:
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeifr4xpmzeb5hvpgd6h4nxlsu3ef2c3f6l5bgs34vym5ok6vllwhmy
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 - valory/service_registry:0.1.0:bafybeidipx4cmchxdu5i2v67rno7muie7ckjhmasaj64tv2vtj4fveklxi
-- valory/weather_oracle:0.1.0:bafybeicgyt4s3tdx3hcfz6du4q74kryrmzkcmbp5kmbvnmj2aheukukwhm
+- valory/weather_oracle:0.1.0:bafybeieazyqakx4tbux3g3qjnrat5x7zgp3jumdeidqae6zebny4yihqb4
 protocols:
 - open_aea/signing:1.0.0:bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi
 - valory/abci:0.1.0:bafybeiaqmp7kocbfdboksayeqhkbrynvlfzsx4uy4x6nohywnmaig4an7u
@@ -32,8 +32,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeif2naoydlrqkdpnig34uejedwgurjwyvmbpcz53tif7pyukfdophq
 - valory/abstract_round_abci:0.1.0:bafybeigjddhk7epta7xpnfvv426xedff5abh4xlkwi6cqgp4vkutgkvydm
-- valory/weather_oracle_abci:0.1.0:bafybeicg752uienwd7np7tghzqgsvndhu5tjyea3iaqmbpprt7tn6ruw4u
-- valory/learning_chained_abci:0.1.0:bafybeicd6mweczgnsks6degjgfgme7oilgmuki2pvky4ljodgbqjdnymzi
+- valory/weather_oracle_abci:0.1.0:bafybeiebcsktklyklvbdbewlergatuyr5jvcpokoxyege4zvwj3shc3cni
+- valory/learning_chained_abci:0.1.0:bafybeiflkljph6rlgq4uctzmzgwzw24n4t6sykmuihgfpjebrjryerh224
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq
@@ -203,6 +203,7 @@ models:
       termination_from_block: ${int:34088325}
       transfer_target_address: ${str:0x0000000000000000000000000000000000000000}
       olas_token_address: ${str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
+      weather_oracle_address: ''
   weatherstack_specs:
     args:
       api_id: weatherstack

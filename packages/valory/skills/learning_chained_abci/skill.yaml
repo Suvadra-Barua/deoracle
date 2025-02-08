@@ -8,9 +8,9 @@ aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeihu5y5llhaefw32jodf2nc2x5tig7cfo2fallbodv6vodczunpbve
   behaviours.py: bafybeieh33qfi4vunqiaxel4kuputoduwc6rjeu5l3b6lewdsbbxod66se
-  composition.py: bafybeifq3m5xscqtjxo32ommd5v2t7a2noic3j2q25jdgdt4qhqmra54li
+  composition.py: bafybeihkglxnfg4j6n6g46gbisjyslilxvopjckmirk23iiv5opm3qtsay
   dialogues.py: bafybeiakqfqcpg7yrxt4bsyernhy5p77tci4qhmgqqjqi3ttx7zk6sklca
-  fsm_specification.yaml: bafybeie6fdtsqsvvt6wkflej4gvszxzkp2t4ppe52o24fez57bd4jole2m
+  fsm_specification.yaml: bafybeiadfbyneu4unne5msb74woi756qv5twtdxuqhofck6gsco56p2rxq
   handlers.py: bafybeigldyf7voz2lttmmz7gunrr6yamgruzvr2trvbjxcnqxw2avositu
   models.py: bafybeih3d7juvkbw4exsktugvji6nbil2f7yuzylwgzolrvagrgrev6tsq
 fingerprint_ignore_patterns: []
@@ -22,7 +22,7 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq
-- valory/weather_oracle_abci:0.1.0:bafybeicg752uienwd7np7tghzqgsvndhu5tjyea3iaqmbpprt7tn6ruw4u
+- valory/weather_oracle_abci:0.1.0:bafybeiebcsktklyklvbdbewlergatuyr5jvcpokoxyege4zvwj3shc3cni
 - valory/transaction_settlement_abci:0.1.0:bafybeifmgmwdkx4esemxjacjwzqkqymkuklb5nehkwqkx7v335fllgswcq
 behaviours:
   main:
@@ -139,6 +139,7 @@ models:
       default_chain_id: gnosis
       transfer_target_address: '0x0000000000000000000000000000000000000000'
       olas_token_address: '0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f'
+      weather_oracle_address: ''
     class_name: Params
   coingecko_specs:
     args:

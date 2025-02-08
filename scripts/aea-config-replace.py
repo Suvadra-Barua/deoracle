@@ -71,6 +71,11 @@ def main() -> None:
             config[-1]["models"]["params"]["args"][
                 "transfer_target_address"
             ] = f"${{str:{os.getenv('TRANSFER_TARGET_ADDRESS')}}}"  # type: ignore
+            
+            #WEATHER_ORACLE_ADDRESS
+            config[-1]["models"]["params"]["args"][
+                "weather_oracle_address"
+            ] = f"${{str:{os.getenv('WEATHER_ORACLE_ADDRESS')}}}"  # type: ignore
 
     with open(Path("learning_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)

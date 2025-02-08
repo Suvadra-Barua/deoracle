@@ -27,6 +27,7 @@ states:
 - CheckLateTxHashesRound
 - CheckTransactionHistoryRound
 - CollectSignatureRound
+- RequestDataPullRound
 - OracleDataPullRound
 - DecisionMakingRound
 - FinalizationRound
@@ -57,6 +58,9 @@ transition_func:
     (CollectSignatureRound, DONE): FinalizationRound
     (CollectSignatureRound, NO_MAJORITY): ResetRound
     (CollectSignatureRound, ROUND_TIMEOUT): CollectSignatureRound
+    (RequestDataPullRound, DONE): OracleDataPullRound
+    (RequestDataPullRound, NO_MAJORITY): RequestDataPullRound
+    (RequestDataPullRound, ROUND_TIMEOUT): RequestDataPullRound
     (OracleDataPullRound, DONE): DecisionMakingRound
     (OracleDataPullRound, NO_MAJORITY): OracleDataPullRound
     (OracleDataPullRound, ROUND_TIMEOUT): OracleDataPullRound
@@ -75,10 +79,10 @@ transition_func:
     (RandomnessTransactionSubmissionRound, NONE): RandomnessTransactionSubmissionRound
     (RandomnessTransactionSubmissionRound, NO_MAJORITY): RandomnessTransactionSubmissionRound
     (RandomnessTransactionSubmissionRound, ROUND_TIMEOUT): RandomnessTransactionSubmissionRound
-    (RegistrationRound, DONE): OracleDataPullRound
+    (RegistrationRound, DONE): RequestDataPullRound
     (RegistrationRound, NO_MAJORITY): RegistrationRound
-    (RegistrationStartupRound, DONE): OracleDataPullRound
-    (ResetAndPauseRound, DONE): OracleDataPullRound
+    (RegistrationStartupRound, DONE): RequestDataPullRound
+    (ResetAndPauseRound, DONE): RequestDataPullRound
     (ResetAndPauseRound, NO_MAJORITY): RegistrationRound
     (ResetAndPauseRound, RESET_AND_PAUSE_TIMEOUT): RegistrationRound
     (ResetRound, DONE): RandomnessTransactionSubmissionRound

@@ -34,6 +34,7 @@ from packages.valory.contracts.multisend.contract import (
     MultiSendContract,
     MultiSendOperation,
 )
+from packages.valory.contracts.weather_oracle.contract import WeatherOracle
 from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.protocols.ledger_api import LedgerApiMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
@@ -51,12 +52,15 @@ from packages.valory.skills.weather_oracle_abci.payloads import (
     OracleDataPullPayload,
     DecisionMakingPayload,
     OracleTxPreparationPayload,
+    RequestDataPullPayload,
+    
 )
 from packages.valory.skills.weather_oracle_abci.rounds import (
     OracleDataPullRound,
     DecisionMakingRound,
     Event,
     LearningAbciApp,
+    RequestDataPullRound,
     SynchronizedData,
     OracleTxPreparationRound,
 )
@@ -64,7 +68,6 @@ from packages.valory.skills.transaction_settlement_abci.payload_tools import (
     hash_payload_to_hex,
 )
 from packages.valory.skills.transaction_settlement_abci.rounds import TX_HASH_LENGTH
-from packages.valory.skills.weather_oracle_abci.rounds import OracleDataPullRound
 
 
 # Define some constants
@@ -114,7 +117,61 @@ class LearningBaseBehaviour(BaseBehaviour, ABC):  # pylint: disable=too-many-anc
 
         return now
 
+class RequestDataPullBehaviour(LearningBaseBehaviour):
+    """This behaviour pulls requester query data from WeatherOracle"""
 
+    matching_round: Type[AbstractRound] = RequestDataPullRound
+
+    def async_act(self) -> Generator:
+        """Do the act, supporting asynchronous execution."""
+
+        with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            sender = self.context.agent_address
+            location = yield from self.get_request_location()
+
+            # Prepare the payload to be shared with other agents
+            # After consensus, all the agents will have the same price, price_ipfs_hash and balance variables in their synchronized data
+            payload = RequestDataPullPayload(
+                sender=sender,
+                location=location
+            )
+
+        # Send the payload to all agents and mark the behaviour as done
+        with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
+            yield from self.send_a2a_transaction(payload)
+            yield from self.wait_until_round_end()
+
+        self.set_done()
+    
+    def get_request_location(self) -> Generator[None, None, Optional[float]]:
+        """Get location of a request id"""
+        self.context.logger.info(
+            f"Getting Requester's Query for Safe {self.synchronized_data.safe_contract_address}"
+        )
+
+        # Use the contract api to interact with the WeatherOracle contract
+        response_msg = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
+            contract_address=self.params.weather_oracle_address,
+            contract_id=str(WeatherOracle.contract_id),
+            contract_callable="get_weather_data",
+            chain_id=GNOSIS_CHAIN_ID,
+            request_id=1
+        )
+
+        # Check that the response is what we expect
+        if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
+            self.context.logger.error(
+                f"Error while retrieving the location: {response_msg}"
+            )
+            return None
+        # print(f"The response msg is {response_msg}")
+        data = response_msg.raw_transaction.body.get("data", None)
+        location = data["location"]
+        self.context.logger.info(
+            f"The requester want to get weather data of the location : {location}"
+        )
+        return location
 class OracleDataPullBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ancestors
     """This behaviour pulls weather data from WeatherStack API and stores it in IPFS"""
 
@@ -126,8 +183,10 @@ class OracleDataPullBehaviour(LearningBaseBehaviour):  # pylint: disable=too-man
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
 
+            # Get request location that was set in previous round
+            location = self.synchronized_data.request_location
             # Get weather data using ApiSpecs
-            weather_data = yield from self.get_weather_data_specs()
+            weather_data = yield from self.get_weather_data_specs(location)
 
             # Store the weather data in IPFS
             weather_ipfs_hash = yield from self.send_weather_to_ipfs(weather_data)
@@ -149,11 +208,16 @@ class OracleDataPullBehaviour(LearningBaseBehaviour):  # pylint: disable=too-man
 
         self.set_done()
 
-    def get_weather_data_specs(self) -> Generator[None, None, Optional[Dict]]:
+    def get_weather_data_specs(self, location:str) -> Generator[None, None, Optional[Dict]]:
         """Get weather data from WeatherStack using ApiSpecs"""
         
         # Get the specs
         specs = self.weatherstack_specs.get_spec()
+
+        # Get location from params and add to parameters
+        specs["parameters"]["query"] = location
+
+        print(f"The weather spec is",{**specs})
         
         # Make the call
         raw_response = yield from self.get_http_response(**specs)
@@ -315,7 +379,7 @@ class TxPreparationBehaviour(
             # Get the transaction hash
             tx_hash = yield from self.get_tx_hash()
 
-            payload = TxPreparationPayload(
+            payload = OracleTxPreparationPayload(
                 sender=sender, tx_submitter=self.auto_behaviour_id(), tx_hash=tx_hash
             )
 
@@ -571,6 +635,7 @@ class WeatherOracleRoundBehaviour(AbstractRoundBehaviour):
     initial_behaviour_cls = OracleDataPullBehaviour
     abci_app_cls = LearningAbciApp  # type: ignore
     behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
+        RequestDataPullBehaviour,
         OracleDataPullBehaviour,
         DecisionMakingBehaviour,
         TxPreparationBehaviour,

@@ -38,6 +38,7 @@ from packages.valory.skills.weather_oracle_abci.payloads import (
     DecisionMakingPayload,
     OracleDataPullPayload,
     OracleTxPreparationPayload,
+    RequestDataPullPayload,
 )
 
 
@@ -102,6 +103,33 @@ class SynchronizedData(BaseSynchronizedData):
     def weather_ipfs_hash(self) -> Optional[str]:
         """Get the weather data IPFS hash."""
         return self.db.get("weather_ipfs_hash", None)
+    
+    @property
+    def request_location(self) -> Optional[str]:
+        """Get the requester query location."""
+        return self.db.get("request_location", None)
+    
+    @property
+    def participant_to_request_data_round(self) -> DeserializedCollection:
+        """Get the participants to the request data round."""
+        return self._get_deserialized("participant_to_request_data_round")
+
+class RequestDataPullRound(CollectSameUntilThresholdRound):
+    """RequestDataPullRound"""
+
+    payload_class = RequestDataPullPayload
+    synchronized_data_class = SynchronizedData
+    done_event = Event.DONE
+    no_majority_event = Event.NO_MAJORITY
+    required_class_attributes = ()
+
+    # Collection key specifies where in the synchronized data the agento to payload mapping will be stored
+    collection_key = get_name(SynchronizedData.participant_to_request_data_round)
+
+    # Selection keys for extracting specific fields
+    selection_key = (
+        get_name(SynchronizedData.request_location),
+    )
 
 class OracleDataPullRound(CollectSameUntilThresholdRound):
     """OracleDataPullRound"""
@@ -178,11 +206,16 @@ class FinishedTxPreparationRound(DegenerateRound):
 class LearningAbciApp(AbciApp[Event]):
     """LearningAbciApp"""
 
-    initial_round_cls: AppState = OracleDataPullRound
+    initial_round_cls: AppState = RequestDataPullRound
     initial_states: Set[AppState] = {
-        OracleDataPullRound,
+        RequestDataPullRound,
     }
     transition_function: AbciAppTransitionFunction = {
+        RequestDataPullRound: {
+            Event.NO_MAJORITY: RequestDataPullRound,
+            Event.ROUND_TIMEOUT: RequestDataPullRound,
+            Event.DONE: OracleDataPullRound,
+        },
         OracleDataPullRound: {
             Event.NO_MAJORITY: OracleDataPullRound,
             Event.ROUND_TIMEOUT: OracleDataPullRound,
@@ -210,7 +243,7 @@ class LearningAbciApp(AbciApp[Event]):
     event_to_timeout: EventToTimeout = {}
     cross_period_persisted_keys: FrozenSet[str] = frozenset()
     db_pre_conditions: Dict[AppState, Set[str]] = {
-        OracleDataPullRound: set(),
+        RequestDataPullRound: set(),
     }
     db_post_conditions: Dict[AppState, Set[str]] = {
         FinishedDecisionMakingRound: set(),

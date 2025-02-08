@@ -47,6 +47,7 @@ class WeatherOracle(Contract):
         contract_instance = cls.get_instance(ledger_api, contract_address)
         weather_data = contract_instance.functions.getWeatherData(request_id).call()
         
+        print(f"The weather data from contract:",{weather_data})
         return dict(
             data={
                 "ipfsHash": weather_data[0],

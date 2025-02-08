@@ -34,6 +34,11 @@ class OracleDataPullPayload(BaseTxPayload):
     wind_speed: Optional[float]
     weather_ipfs_hash: Optional[str]
 
+@dataclass(frozen=True)
+class RequestDataPullPayload(BaseTxPayload):
+    """Represent a transaction payload for the RequestDataPullRound."""
+
+    location: Optional[str]
 
 
 @dataclass(frozen=True)

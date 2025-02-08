@@ -4,20 +4,24 @@ alphabet_in:
 - NO_MAJORITY
 - ROUND_TIMEOUT
 - TRANSACT
-default_start_state: OracleDataPullRound
+default_start_state: RequestDataPullRound
 final_states:
 - FinishedDecisionMakingRound
 - FinishedTxPreparationRound
 label: LearningAbciApp
 start_states:
-- OracleDataPullRound
+- RequestDataPullRound
 states:
+- RequestDataPullRound
 - OracleDataPullRound
 - DecisionMakingRound
 - FinishedDecisionMakingRound
 - FinishedTxPreparationRound
 - OracleTxPreparationRound
 transition_func:
+    (RequestDataPullRound, DONE): OracleDataPullRound
+    (RequestDataPullRound, NO_MAJORITY): RequestDataPullRound
+    (RequestDataPullRound, ROUND_TIMEOUT): RequestDataPullRound
     (OracleDataPullRound, DONE): DecisionMakingRound
     (OracleDataPullRound, NO_MAJORITY): OracleDataPullRound
     (OracleDataPullRound, ROUND_TIMEOUT): OracleDataPullRound
