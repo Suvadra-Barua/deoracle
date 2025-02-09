@@ -155,7 +155,7 @@ class RequestDataPullBehaviour(LearningBaseBehaviour):
             contract_id=str(WeatherOracle.contract_id),
             contract_callable="get_weather_data",
             chain_id=GNOSIS_CHAIN_ID,
-            request_id=1
+            request_id=0
         )
 
         # Check that the response is what we expect
@@ -343,7 +343,7 @@ class OracleTxPreparationBehaviour(
             contract_address=self.params.weather_oracle_address,
             contract_id=str(WeatherOracle.contract_id),
             contract_callable="build_update_weather_tx",
-            request_id=1,
+            request_id=0,
             ipfs_hash=ipfs_hash,
             chain_id=GNOSIS_CHAIN_ID,
         )
