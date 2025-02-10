@@ -5,7 +5,7 @@ license: Apache-2.0
 description: A oracle agent.
 aea_version: '>=1.19.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeie5m76ta46xggcm6dyxszq7ktm5jmcikgqoxho6sttnzvogn52zdq
+  __init__.py: bafybeib7z7brqnsjlmuz3dqy2fuxjqhkh5t4exq2walhbjnzrgiaohqa6y
 fingerprint_ignore_patterns: []
 connections:
 - valory/abci:0.1.0:bafybeie2bc44r2ddspeg4v7minuievvjykomcukuf5ryevom6fajno25gy
@@ -32,8 +32,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeif2naoydlrqkdpnig34uejedwgurjwyvmbpcz53tif7pyukfdophq
 - valory/abstract_round_abci:0.1.0:bafybeigjddhk7epta7xpnfvv426xedff5abh4xlkwi6cqgp4vkutgkvydm
-- valory/weather_oracle_abci:0.1.0:bafybeicko5wpkt5mnktphf3qx5afcuk44l2b72uge3ntpco4ghtdbbpr2e
-- valory/oracle_chained_abci:0.1.0:bafybeifzvyee4jrgayll5bby4cisfgfeoauqydxhodqwipwl27pc4ki5zi
+- valory/weather_oracle_abci:0.1.0:bafybeie6o3ynnjq46jzkjon5doonldxtjeikdwcu75zlujzuxworacvzii
+- valory/oracle_chained_abci:0.1.0:bafybeihqxfp2snxll3xc3tl5ar337yz3tftdhu3tlwotp7oo6ldqglpjru
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq

@@ -10,7 +10,7 @@ packages/open_aea
 oracle_agent
 oracle_service
 
-# packages/valory/agents/*
+packages/valory/agents/*
 packages/valory/connections/*
 packages/valory/contracts/*
 packages/valory/services/*

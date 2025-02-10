@@ -2,10 +2,10 @@
     "dev": {
         "contract/valory/weather_oracle/0.1.0": "bafybeieazyqakx4tbux3g3qjnrat5x7zgp3jumdeidqae6zebny4yihqb4",
         "contract/valory/storage/0.1.0": "bafybeidnml27p6n4xywnhjfd6o6st3whjfbocvs2z4azqorqj3jg55squy",
-        "skill/valory/weather_oracle_abci/0.1.0": "bafybeicko5wpkt5mnktphf3qx5afcuk44l2b72uge3ntpco4ghtdbbpr2e",
-        "skill/valory/oracle_chained_abci/0.1.0": "bafybeifzvyee4jrgayll5bby4cisfgfeoauqydxhodqwipwl27pc4ki5zi",
-        "agent/valory/oracle_agent/0.1.0": "bafybeiawrqtsn6wihublwqsrcl3dqcmroznot24qs4w7v4b4hsma5nnz7y",
-        "service/valory/oracle_service/0.1.0": "bafybeietlx6q4m3fsjfkzgt2jdpq7tucezfyp7xmgnm7nt3t4ukhgyhjbe"
+        "skill/valory/weather_oracle_abci/0.1.0": "bafybeie6o3ynnjq46jzkjon5doonldxtjeikdwcu75zlujzuxworacvzii",
+        "skill/valory/oracle_chained_abci/0.1.0": "bafybeihqxfp2snxll3xc3tl5ar337yz3tftdhu3tlwotp7oo6ldqglpjru",
+        "agent/valory/oracle_agent/0.1.0": "bafybeicpwbpozpe2bulswranta3k4tqdldgwmbxgwh6ukljavmuaimzkua",
+        "service/valory/oracle_service/0.1.0": "bafybeigksqltyzzu6ah6fpit7j5mtan4jbhmru43b22qjojnszscmpser4"
     },
     "third_party": {
         "protocol/open_aea/signing/1.0.0": "bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi",
