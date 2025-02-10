@@ -25,6 +25,7 @@ from pathlib import Path
 from tempfile import mkdtemp
 from typing import Dict, Generator, Optional, Set, Type, cast
 
+from packages.valory.contracts import weather_oracle
 from packages.valory.contracts.gnosis_safe.contract import (
     GnosisSafeContract,
     SafeOperation,
@@ -372,14 +373,14 @@ class OracleTxPreparationBehaviour(
         self.context.logger.info("Preparing Weather Update transaction")
         
         ipfs_hash = self.synchronized_data.weather_ipfs_hash
-
+        request_id = self.synchronized_data.request_id
         # Use the contract api to interact with the WeatherOracle contract
         response_msg = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
             contract_address=self.params.weather_oracle_address,
             contract_id=str(WeatherOracle.contract_id),
             contract_callable="build_update_weather_tx",
-            request_id=0,
+            request_id=request_id,
             ipfs_hash=ipfs_hash,
             chain_id=GNOSIS_CHAIN_ID,
         )
@@ -409,10 +410,49 @@ class OracleTxPreparationBehaviour(
     def get_tx_hash(self) -> Generator[None, None, Optional[str]]:
         """Get the transaction hash"""
 
+        block_number = self.get_block_number()
+        self.context.logger.info(f"Timestamp is {block_number}")
+        last_number = int(str(block_number)[-1])
+
         # Multisend transaction (Only Update Weather) (Safe -> recipient)
-        self.context.logger.info("Preparing a multisend transaction")
-        tx_hash = yield from self.get_multisend_safe_tx_hash()
-        return tx_hash
+        if last_number in [0, 1, 2, 3, 4]:
+            self.context.logger.info("Preparing a multisend transaction")
+            tx_hash = yield from self.get_multisend_safe_tx_hash()
+            return tx_hash
+
+        # Update weather transaction (Safe -> recipient)
+        if last_number in [5, 6, 7, 8, 9]:
+            self.context.logger.info("Preparing a safe transaction")
+            tx_hash = yield from self.get_update_weather_safe_tx_hash()
+            return tx_hash
+
+    
+    def get_block_number(self) -> Generator[None, None, Optional[int]]:
+        """Get the block number"""
+
+        # Call the ledger connection (equivalent to web3.py)
+        ledger_api_response = yield from self.get_ledger_api_response(
+            performative=LedgerApiMessage.Performative.GET_STATE,
+            ledger_callable="get_block_number",
+            chain_id=GNOSIS_CHAIN_ID,
+        )
+
+        # Check for errors on the response
+        if ledger_api_response.performative != LedgerApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"Error while retrieving block number: {ledger_api_response}"
+            )
+            return None
+
+        # Extract and return the block number
+        block_number = cast(
+            int, ledger_api_response.state.body["get_block_number_result"]
+        )
+
+        self.context.logger.error(f"Got block number: {block_number}")
+
+        return block_number
+        
 
     def get_multisend_safe_tx_hash(self) -> Generator[None, None, Optional[str]]:
         """Get a multisend transaction hash"""
@@ -470,6 +510,25 @@ class OracleTxPreparationBehaviour(
             data=bytes.fromhex(multisend_data),
             operation=SafeOperation.DELEGATE_CALL.value,  # we are delegating the call to the multisend contract
         )
+        return safe_tx_hash
+    
+    def get_update_weather_safe_tx_hash(self) -> Generator[None, None, Optional[str]]:
+        """Prepare an update weather safe transaction"""
+
+        # Transaction data
+        data_hex = yield from self.get_update_weather_tx_data()
+
+        # Check for errors
+        if data_hex is None:
+            return None
+
+        # Prepare safe transaction
+        safe_tx_hash = yield from self._build_safe_tx_hash(
+            to_address=self.params.weather_oracle_address, data=bytes.fromhex(data_hex)
+        )
+
+        self.context.logger.info(f"Update weather transaction hash is {safe_tx_hash}")
+
         return safe_tx_hash
 
     def _build_safe_tx_hash(
