@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains round behaviours of LearningAbciApp."""
+"""This package contains round behaviours of WeatherOracleAbciApp."""
 
 import json
 from abc import ABC
@@ -58,7 +58,7 @@ from packages.valory.skills.weather_oracle_abci.rounds import (
     OracleDataPullRound,
     DecisionMakingRound,
     Event,
-    LearningAbciApp,
+    WeatherOracleAbciApp,
     RequestDataPullRound,
     SynchronizedData,
     OracleTxPreparationRound,
@@ -503,7 +503,7 @@ class WeatherOracleRoundBehaviour(AbstractRoundBehaviour):
     """WeatherOracleRoundBehaviour"""
 
     initial_behaviour_cls = OracleDataPullBehaviour
-    abci_app_cls = LearningAbciApp  # type: ignore
+    abci_app_cls = WeatherOracleAbciApp  # type: ignore
     behaviours: Set[Type[BaseBehaviour]] = [  # type: ignore
         RequestDataPullBehaviour,
         OracleDataPullBehaviour,
