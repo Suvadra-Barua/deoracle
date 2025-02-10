@@ -410,7 +410,7 @@ class OracleTxPreparationBehaviour(
     def get_tx_hash(self) -> Generator[None, None, Optional[str]]:
         """Get the transaction hash"""
 
-        block_number = self.get_block_number()
+        block_number = yield from self.get_block_number()
         self.context.logger.info(f"Timestamp is {block_number}")
         last_number = int(str(block_number)[-1])
 
