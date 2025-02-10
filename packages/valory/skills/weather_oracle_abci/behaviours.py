@@ -126,13 +126,25 @@ class RequestDataPullBehaviour(OracleBaseBehaviour):
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
-            location = yield from self.get_request_location()
+            # location = yield from self.get_request_location()
+            while True:
+                try:
+                    event = yield from self.catch_event()
+                    if event:  # Check if an event is received
+                        print(f"the event is {event}")
+                        location = event[0].get("location")
+                        request_id = event[0].get("requestId")
+                        break  # Exit the loop when an event is caught
+                except Exception as e:
+                    print(f"Failed to catch event: {e}. Retrying...")
+                    continue  # Keep trying if an exception occurs or no event is caught
 
             # Prepare the payload to be shared with other agents
             # After consensus, all the agents will have the same price, price_ipfs_hash and balance variables in their synchronized data
             payload = RequestDataPullPayload(
                 sender=sender,
-                location=location
+                location=location,
+                request_id=request_id
             )
 
         # Send the payload to all agents and mark the behaviour as done
@@ -142,35 +154,59 @@ class RequestDataPullBehaviour(OracleBaseBehaviour):
 
         self.set_done()
     
-    def get_request_location(self) -> Generator[None, None, Optional[float]]:
-        """Get location of a request id"""
-        self.context.logger.info(
-            f"Getting Requester's Query for Safe {self.synchronized_data.safe_contract_address}"
-        )
+    # def get_request_location(self) -> Generator[None, None, Optional[float]]:
+    #     """Get location of a request id"""
+    #     self.context.logger.info(
+    #         f"Getting Requester's Query for Safe {self.synchronized_data.safe_contract_address}"
+    #     )
 
-        # Use the contract api to interact with the WeatherOracle contract
+    #     # Use the contract api to interact with the WeatherOracle contract
+    #     response_msg = yield from self.get_contract_api_response(
+    #         performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
+    #         contract_address=self.params.weather_oracle_address,
+    #         contract_id=str(WeatherOracle.contract_id),
+    #         contract_callable="get_weather_data",
+    #         chain_id=GNOSIS_CHAIN_ID,
+    #         request_id=0
+    #     )
+
+    #     # Check that the response is what we expect
+    #     if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
+    #         self.context.logger.error(
+    #             f"Error while retrieving the location: {response_msg}"
+    #         )
+    #         return None
+    #     # print(f"The response msg is {response_msg}")
+    #     data = response_msg.raw_transaction.body.get("data", None)
+    #     location = data["location"]
+    #     self.context.logger.info(
+    #         f"The requester want to get weather data of the location : {location}"
+    #     )
+    #     return location
+
+    def catch_event(self) -> Generator[None, None, Optional[float]]:
+        # Use the contract api to interact with the weatherOracle contract
         response_msg = yield from self.get_contract_api_response(
-            performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_address=self.params.weather_oracle_address,
             contract_id=str(WeatherOracle.contract_id),
-            contract_callable="get_weather_data",
+            contract_callable="get_events",
+            event_name="WeatherRequested",
+            from_block=38439703,
+            to_block=38439703+20,
             chain_id=GNOSIS_CHAIN_ID,
-            request_id=0
         )
 
         # Check that the response is what we expect
-        if response_msg.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
+        if response_msg.performative != ContractApiMessage.Performative.STATE:
             self.context.logger.error(
-                f"Error while retrieving the location: {response_msg}"
+                f"Could not get the Weather Request events: {response_msg}"
             )
             return None
-        # print(f"The response msg is {response_msg}")
-        data = response_msg.raw_transaction.body.get("data", None)
-        location = data["location"]
-        self.context.logger.info(
-            f"The requester want to get weather data of the location : {location}"
-        )
-        return location
+
+        weather_request_events = cast(list, response_msg.state.body.get("events", None))
+
+        return weather_request_events
 class OracleDataPullBehaviour(OracleBaseBehaviour):  # pylint: disable=too-many-ancestors
     """This behaviour pulls weather data from WeatherStack API and stores it in IPFS"""
 
