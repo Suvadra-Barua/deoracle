@@ -80,7 +80,7 @@ TO_ADDRESS_KEY = "to_address"
 METADATA_FILENAME = "metadata.json"
 
 
-class LearningBaseBehaviour(BaseBehaviour, ABC):  # pylint: disable=too-many-ancestors
+class OracleBaseBehaviour(BaseBehaviour, ABC):  # pylint: disable=too-many-ancestors
     """Base behaviour for the weather_oracle_abci behaviours."""
 
     @property
@@ -116,7 +116,7 @@ class LearningBaseBehaviour(BaseBehaviour, ABC):  # pylint: disable=too-many-anc
 
         return now
 
-class RequestDataPullBehaviour(LearningBaseBehaviour):
+class RequestDataPullBehaviour(OracleBaseBehaviour):
     """This behaviour pulls requester query data from WeatherOracle"""
 
     matching_round: Type[AbstractRound] = RequestDataPullRound
@@ -171,7 +171,7 @@ class RequestDataPullBehaviour(LearningBaseBehaviour):
             f"The requester want to get weather data of the location : {location}"
         )
         return location
-class OracleDataPullBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ancestors
+class OracleDataPullBehaviour(OracleBaseBehaviour):  # pylint: disable=too-many-ancestors
     """This behaviour pulls weather data from WeatherStack API and stores it in IPFS"""
 
     matching_round: Type[AbstractRound] = OracleDataPullRound
@@ -257,7 +257,7 @@ class OracleDataPullBehaviour(LearningBaseBehaviour):  # pylint: disable=too-man
 
 
 class DecisionMakingBehaviour(
-    LearningBaseBehaviour
+    OracleBaseBehaviour
 ):  # pylint: disable=too-many-ancestors
     """DecisionMakingBehaviour"""
 
@@ -305,7 +305,7 @@ class DecisionMakingBehaviour(
 
 
 class OracleTxPreparationBehaviour(
-    LearningBaseBehaviour
+    OracleBaseBehaviour
 ):  # pylint: disable=too-many-ancestors
     """OracleTxPreparationBehaviour"""
 

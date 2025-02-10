@@ -30,9 +30,9 @@ from packages.valory.skills.weather_oracle_abci.models import (
     CoingeckoSpecs as BaseCoingeckoSpecs,
     WeatherstackSpecs as BaseWeatherstackSpecs
 )
-from packages.valory.skills.weather_oracle_abci.models import Params as LearningParams
+from packages.valory.skills.weather_oracle_abci.models import Params as OracleParams
 from packages.valory.skills.weather_oracle_abci.models import SharedState as BaseSharedState
-from packages.valory.skills.weather_oracle_abci.rounds import Event as LearningEvent
+from packages.valory.skills.weather_oracle_abci.rounds import Event as OracleEvent
 from packages.valory.skills.oracle_chained_abci.composition import (
     OracleChainedSkillAbciApp,
 )
@@ -66,13 +66,13 @@ class SharedState(BaseSharedState):
             ResetPauseEvent.RESET_AND_PAUSE_TIMEOUT
         ] = (self.context.params.reset_pause_duration + MARGIN)
 
-        OracleChainedSkillAbciApp.event_to_timeout[LearningEvent.ROUND_TIMEOUT] = (
+        OracleChainedSkillAbciApp.event_to_timeout[OracleEvent.ROUND_TIMEOUT] = (
             self.context.params.round_timeout_seconds * MULTIPLIER
         )
 
 
 class Params(  # pylint: disable=too-many-ancestors
-    LearningParams,
+    OracleParams,
     TerminationParams,
 ):
     """A model to represent params for multiple abci apps."""

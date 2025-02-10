@@ -1,13 +1,13 @@
-name: learning_service
+name: oracle_service
 author: valory
 version: 0.1.0
-description: A learning service.
+description: A oracle service.
 aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint:
   README.md: bafybeid42pdrf6qrohedylj4ijrss236ai6geqgf3he44huowiuf7pl464
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeiawrqtsn6wihublwqsrcl3dqcmroznot24qs4w7v4b4hsma5nnz7y
+agent: valory/oracle_agent:0.1.0:bafybeiawrqtsn6wihublwqsrcl3dqcmroznot24qs4w7v4b4hsma5nnz7y
 number_of_agents: 4
 deployment:
   agent:
@@ -73,7 +73,7 @@ extra:
         request_retry_delay: 1.0
         request_timeout: 10.0
         round_timeout_seconds: 30.0
-        service_id: learning
+        service_id: oracle
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:0x48b6af7B12C71f09e2fC8aF4855De4Ff54e775cA}
         share_tm_config_on_startup: ${USE_ACN:bool:false}
         sleep_time: 1
@@ -81,7 +81,7 @@ extra:
         tendermint_com_url: ${TENDERMINT_COM_URL:str:http://localhost:8080}
         tendermint_max_retries: 5
         tendermint_url: ${TENDERMINT_URL:str:http://localhost:26657}
-        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:learning_tm_0:26656}
+        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:oracle_tm_0:26656}
         tx_timeout: 10.0
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: 1205
@@ -130,7 +130,7 @@ extra:
         request_retry_delay: 1.0
         request_timeout: 10.0
         round_timeout_seconds: 30.0
-        service_id: learning
+        service_id: oracle
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:0x48b6af7B12C71f09e2fC8aF4855De4Ff54e775cA}
         share_tm_config_on_startup: ${USE_ACN:bool:false}
         sleep_time: 1
@@ -138,7 +138,7 @@ extra:
         tendermint_com_url: ${TENDERMINT_COM_URL:str:http://localhost:8080}
         tendermint_max_retries: 5
         tendermint_url: ${TENDERMINT_URL:str:http://localhost:26657}
-        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:learning_tm_0:26656}
+        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:oracle_tm_0:26656}
         tx_timeout: 10.0
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: 1205
@@ -187,7 +187,7 @@ extra:
         request_retry_delay: 1.0
         request_timeout: 10.0
         round_timeout_seconds: 30.0
-        service_id: learning
+        service_id: oracle
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:0x48b6af7B12C71f09e2fC8aF4855De4Ff54e775cA}
         share_tm_config_on_startup: ${USE_ACN:bool:false}
         sleep_time: 1
@@ -195,7 +195,7 @@ extra:
         tendermint_com_url: ${TENDERMINT_COM_URL:str:http://localhost:8080}
         tendermint_max_retries: 5
         tendermint_url: ${TENDERMINT_URL:str:http://localhost:26657}
-        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:learning_tm_0:26656}
+        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:oracle_tm_0:26656}
         tx_timeout: 10.0
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: 1205
@@ -246,7 +246,7 @@ extra:
         request_retry_delay: 1.0
         request_timeout: 10.0
         round_timeout_seconds: 30.0
-        service_id: learning
+        service_id: oracle
         service_registry_address: ${SERVICE_REGISTRY_ADDRESS:str:0x48b6af7B12C71f09e2fC8aF4855De4Ff54e775cA}
         share_tm_config_on_startup: ${USE_ACN:bool:false}
         sleep_time: 1
@@ -254,7 +254,7 @@ extra:
         tendermint_com_url: ${TENDERMINT_COM_URL:str:http://localhost:8080}
         tendermint_max_retries: 5
         tendermint_url: ${TENDERMINT_URL:str:http://localhost:26657}
-        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:learning_tm_0:26656}
+        tendermint_p2p_url: ${TENDERMINT_P2P_URL_0:str:oracle_tm_0:26656}
         tx_timeout: 10.0
         use_termination: ${USE_TERMINATION:bool:false}
         validate_timeout: 1205

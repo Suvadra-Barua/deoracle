@@ -6,14 +6,14 @@ description: A oracle skill.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeidbht2aokqpxthpzry6kr73qtifu4sunjzc54lyhvnktul63hytki
-  behaviours.py: bafybeiei244afjyvqe3ble3epvjoopshe4grrmytqpszcq5tfepnbbnwli
+  __init__.py: bafybeiez3zwi7tjoisafihnuamlcdvrus3cq2kdhykfb4ecuafy6fi7q3y
+  behaviours.py: bafybeidlbjvn2vpwjcgnrmfqos7vaouzc4dxfejcqeaqbo3qhpi3yf55oi
   dialogues.py: bafybeiaezng622eucp7jrxrygqjwpamtiggtkfhl7ybrakwz7bhdlhjzau
   fsm_specification.yaml: bafybeiaycpsabdpzpxgmcx4xwiaagleisjfwyqc3rs3iv7sdfmxh6k6p5e
   handlers.py: bafybeiactxqgnfit2qkyxet4zjb64nuaj6kxd5c4xeksnvtso35fzivfdm
   models.py: bafybeif5xyiuoapj6haeft3umf4pxnyhk5d73q3xy2uk4qy3zb7spdsfpi
   payloads.py: bafybeifwwrh27wkqvorydjougoqzrbpxn26lprcyl2dggfevvuejqyfad4
-  rounds.py: bafybeibfgstltdhntb6hisrqboq3qevxu2gnrxmbynijube4huumw3gjku
+  rounds.py: bafybeigi5x6lqgkxzclak62qenouagxsf6p3hsjtqr3pkjz6nzzv6xagyu
 fingerprint_ignore_patterns: []
 connections: []
 contracts:
@@ -109,7 +109,7 @@ models:
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 30.0
-      service_id: learning
+      service_id: oracle
       service_registry_address: null
       setup:
         all_participants:

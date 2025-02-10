@@ -200,7 +200,7 @@ class FinishedDecisionMakingRound(DegenerateRound):
 
 
 class FinishedTxPreparationRound(DegenerateRound):
-    """FinishedLearningRound"""
+    """FinishedTxPreparationRound"""
 
 
 class WeatherOracleAbciApp(AbciApp[Event]):

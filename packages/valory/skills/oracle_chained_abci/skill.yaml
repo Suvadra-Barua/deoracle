@@ -2,17 +2,17 @@ name: oracle_chained_abci
 author: valory
 version: 0.1.0
 type: skill
-description: The chained abci for the learning skill.
+description: The chained abci for the Oracle skill.
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeih7xfijgnwekditpsvs2lasyc6wz5j35exn7bhdcv6ooi37azjh6a
+  __init__.py: bafybeidqwel5r5hrclkeewuy5jfe5rt235vdehiwds5vbz77dawv32rmam
   behaviours.py: bafybeiaivd7hetgiouey57atcbqxwttvqkrio6ussuhrhxgwihw4ayn244
   composition.py: bafybeidpjay5ulredrotekliiclh3q2k6d73f7bfqps2eq2ktwgeoq2vcy
   dialogues.py: bafybeiakqfqcpg7yrxt4bsyernhy5p77tci4qhmgqqjqi3ttx7zk6sklca
   fsm_specification.yaml: bafybeifrqoidh3e3jko4xdgraozuvuy46ioy2nmnpqpp4usitpzr5467ru
   handlers.py: bafybeidik3t4abyehz23z4cxqdw325k3d26u36eofos45ovl5wxhoh246u
-  models.py: bafybeidp6nkdwk73grfb257tjghkqeqtzl2jc763igd4gathvshiwysecu
+  models.py: bafybeihjhx34lhvuobapgbdz2g6jo3umwdhy3nxp7mbsdvl4piv7io4xsq
 fingerprint_ignore_patterns: []
 connections: []
 contracts: []
@@ -22,7 +22,7 @@ skills:
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq
-- valory/weather_oracle_abci:0.1.0:bafybeicko5wpkt5mnktphf3qx5afcuk44l2b72uge3ntpco4ghtdbbpr2e
+- valory/weather_oracle_abci:0.1.0:bafybeie6o3ynnjq46jzkjon5doonldxtjeikdwcu75zlujzuxworacvzii
 - valory/transaction_settlement_abci:0.1.0:bafybeifmgmwdkx4esemxjacjwzqkqymkuklb5nehkwqkx7v335fllgswcq
 behaviours:
   main:
@@ -108,7 +108,7 @@ models:
       retry_attempts: 400
       retry_timeout: 3
       round_timeout_seconds: 30.0
-      service_id: learning
+      service_id: oracle
       service_registry_address: null
       setup:
         all_participants: []
