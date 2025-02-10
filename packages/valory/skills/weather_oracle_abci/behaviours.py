@@ -193,8 +193,8 @@ class RequestDataPullBehaviour(OracleBaseBehaviour):
             contract_id=str(WeatherOracle.contract_id),
             contract_callable="get_events",
             event_name="WeatherRequested",
-            from_block=38439703,
-            to_block=38439703+20,
+            from_block=int(self.params.from_block),
+            to_block=int(self.params.to_block),
             chain_id=GNOSIS_CHAIN_ID,
         )
 

@@ -7,11 +7,11 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiez3zwi7tjoisafihnuamlcdvrus3cq2kdhykfb4ecuafy6fi7q3y
-  behaviours.py: bafybeih45bz4hcres6c7whbqg4chmez2vgkleg2zqpv32s53wetc65og5e
+  behaviours.py: bafybeign23sehxyzcp3tgkxegchsf7wrmafyui5fsmapf324spavxa77zi
   dialogues.py: bafybeiaezng622eucp7jrxrygqjwpamtiggtkfhl7ybrakwz7bhdlhjzau
   fsm_specification.yaml: bafybeiaycpsabdpzpxgmcx4xwiaagleisjfwyqc3rs3iv7sdfmxh6k6p5e
   handlers.py: bafybeiactxqgnfit2qkyxet4zjb64nuaj6kxd5c4xeksnvtso35fzivfdm
-  models.py: bafybeif5xyiuoapj6haeft3umf4pxnyhk5d73q3xy2uk4qy3zb7spdsfpi
+  models.py: bafybeifxjjid2nbta67snjjadvvro5dhgzckm7braec635ha2ea3jnijva
   payloads.py: bafybeifhtngo2yumi2chpuv5aj3dh23p4mn5nakq6ztaboykr72o5srclq
   rounds.py: bafybeifv5lbzadus23rqqgiii3zvka6uphi5ogtrvwmnqdxzd7fvmzwjrq
 fingerprint_ignore_patterns: []
@@ -131,6 +131,8 @@ models:
       olas_token_address: '0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f'
       weather_oracle_address: ''
       multisend_address: '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
+      from_block: ''
+      to_block: ''
     class_name: Params
   weatherstack_specs:
     args:

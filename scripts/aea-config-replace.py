@@ -57,6 +57,16 @@ def main() -> None:
             # WeatherStack parameters (ApiSpecs) 
             config[-1]["models"]["weatherstack_specs"]["args"]["parameters"] = f"${{dict:{os.getenv('WEATHERSTACK_PARAMETERS')}}}"
 
+            # From Block
+            config[-1]["models"]["params"]["args"][
+                "from_block"
+            ] = f"${{str:{os.getenv('FROM_BLOCK')}}}"  # type: ignore
+
+            # To Block
+            config[-1]["models"]["params"]["args"][
+                "to_block"
+            ] = f"${{str:{os.getenv('TO_BLOCK')}}}"  # type: ignore
+
             # ALL_PARTICIPANTS
             config[-1]["models"]["params"]["args"]["setup"][
                 "all_participants"

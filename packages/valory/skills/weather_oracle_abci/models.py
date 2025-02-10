@@ -56,6 +56,8 @@ class Params(BaseParams):
         )
         self.olas_token_address = self._ensure("olas_token_address", kwargs, str)
         self.weather_oracle_address = self._ensure("weather_oracle_address", kwargs, str)
+        self.from_block = self._ensure("from_block", kwargs, str)
+        self.to_block = self._ensure("to_block", kwargs, str)
 
         # multisend address is used in other skills, so we cannot pop it using _ensure
         self.multisend_address = kwargs.get("multisend_address", "")
