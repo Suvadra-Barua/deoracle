@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the implementation of the learning skill."""
+"""This module contains the implementation of the oracle skill."""
 
 from aea.configurations.base import PublicId
 

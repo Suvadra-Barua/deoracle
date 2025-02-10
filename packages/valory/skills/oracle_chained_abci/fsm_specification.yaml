@@ -19,7 +19,7 @@ alphabet_in:
 - VALIDATE_TIMEOUT
 default_start_state: RegistrationStartupRound
 final_states: []
-label: LearningChainedSkillAbciApp
+label: OracleChainedSkillAbciApp
 start_states:
 - RegistrationRound
 - RegistrationStartupRound

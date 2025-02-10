@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the shared state for the abci skill of LearningAbciApp."""
+"""This module contains the shared state for the abci skill of WeatherOracleAbciApp."""
 
 from typing import Any
 
@@ -29,13 +29,13 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.valory.skills.weather_oracle_abci.rounds import LearningAbciApp
+from packages.valory.skills.weather_oracle_abci.rounds import WeatherOracleAbciApp
 
 
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
-    abci_app_cls = LearningAbciApp
+    abci_app_cls = WeatherOracleAbciApp
 
 
 Requests = BaseRequests

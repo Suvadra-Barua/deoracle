@@ -200,11 +200,11 @@ class FinishedDecisionMakingRound(DegenerateRound):
 
 
 class FinishedTxPreparationRound(DegenerateRound):
-    """FinishedLearningRound"""
+    """FinishedTxPreparationRound"""
 
 
-class LearningAbciApp(AbciApp[Event]):
-    """LearningAbciApp"""
+class WeatherOracleAbciApp(AbciApp[Event]):
+    """WeatherOracleAbciApp"""
 
     initial_round_cls: AppState = RequestDataPullRound
     initial_states: Set[AppState] = {

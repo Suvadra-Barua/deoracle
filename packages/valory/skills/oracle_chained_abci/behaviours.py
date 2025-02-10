@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This package contains round behaviours of LearningChainedSkillAbci."""
+"""This package contains round behaviours of OracleChainedSkillAbci."""
 
 from typing import Set, Type
 
@@ -26,8 +26,8 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     BaseBehaviour,
 )
 from packages.valory.skills.weather_oracle_abci.behaviours import WeatherOracleRoundBehaviour
-from packages.valory.skills.learning_chained_abci.composition import (
-    LearningChainedSkillAbciApp,
+from packages.valory.skills.oracle_chained_abci.composition import (
+    OracleChainedSkillAbciApp,
 )
 from packages.valory.skills.registration_abci.behaviours import (
     AgentRegistrationRoundBehaviour,
@@ -45,11 +45,11 @@ from packages.valory.skills.transaction_settlement_abci.behaviours import (
 )
 
 
-class LearningChainedConsensusBehaviour(AbstractRoundBehaviour):
+class OracleChainedConsensusBehaviour(AbstractRoundBehaviour):
     """Class to define the behaviours this AbciApp has."""
 
     initial_behaviour_cls = RegistrationStartupBehaviour
-    abci_app_cls = LearningChainedSkillAbciApp
+    abci_app_cls = OracleChainedSkillAbciApp
     behaviours: Set[Type[BaseBehaviour]] = {
         *AgentRegistrationRoundBehaviour.behaviours,
         *ResetPauseABCIConsensusBehaviour.behaviours,

@@ -1,11 +1,11 @@
-agent_name: learning_agent
+agent_name: oracle_agent
 author: valory
 version: 0.1.0
 license: Apache-2.0
-description: A learning agent.
+description: A oracle agent.
 aea_version: '>=1.19.0, <2.0.0'
 fingerprint:
-  __init__.py: bafybeie5m76ta46xggcm6dyxszq7ktm5jmcikgqoxho6sttnzvogn52zdq
+  __init__.py: bafybeib7z7brqnsjlmuz3dqy2fuxjqhkh5t4exq2walhbjnzrgiaohqa6y
 fingerprint_ignore_patterns: []
 connections:
 - valory/abci:0.1.0:bafybeie2bc44r2ddspeg4v7minuievvjykomcukuf5ryevom6fajno25gy
@@ -32,8 +32,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeif2naoydlrqkdpnig34uejedwgurjwyvmbpcz53tif7pyukfdophq
 - valory/abstract_round_abci:0.1.0:bafybeigjddhk7epta7xpnfvv426xedff5abh4xlkwi6cqgp4vkutgkvydm
-- valory/weather_oracle_abci:0.1.0:bafybeienopehn4lzkzlpehe2gmnbsb2fe7r2o424fwyihcw7w4n5wasvxy
-- valory/learning_chained_abci:0.1.0:bafybeihiclpbvvjsmtvvrrcj3n3z37smocewar5iexpcdra4rvm637kyzu
+- valory/weather_oracle_abci:0.1.0:bafybeie6o3ynnjq46jzkjon5doonldxtjeikdwcu75zlujzuxworacvzii
+- valory/oracle_chained_abci:0.1.0:bafybeihqxfp2snxll3xc3tl5ar337yz3tftdhu3tlwotp7oo6ldqglpjru
 - valory/registration_abci:0.1.0:bafybeiagi6e2h7kochmlemy5c5yk6hwn37tfxiqvk2en74jhowsdwlmrny
 - valory/reset_pause_abci:0.1.0:bafybeiezfedmmseox3ce5aucxsiszdmvskrwwbtpb2a3vw3sbmc5jt7nri
 - valory/termination_abci:0.1.0:bafybeiea67epwwgngp7b3wavs6hpkaxv6etyaps6g6325bchfnf354mibq
@@ -75,7 +75,7 @@ default_connection: null
 public_id: valory/abci:0.1.0
 type: connection
 config:
-  target_skill_id: valory/learning_chained_abci:0.1.0
+  target_skill_id: valory/oracle_chained_abci:0.1.0
   host: ${str:localhost}
   port: ${int:26658}
   use_tendermint: ${bool:false}
@@ -129,9 +129,9 @@ public_id: valory/http_server:0.22.0:bafybeicblltx7ha3ulthg7bzfccuqqyjmihhrvfezt
 type: connection
 config:
   host: 0.0.0.0
-  target_skill_id: valory/learning_chained_abci:0.1.0
+  target_skill_id: valory/oracle_chained_abci:0.1.0
 ---
-public_id: valory/learning_chained_abci:0.1.0
+public_id: valory/oracle_chained_abci:0.1.0
 type: skill
 models:
   benchmark_tool:
@@ -174,7 +174,7 @@ models:
       request_retry_delay: 1.0
       request_timeout: 10.0
       round_timeout_seconds: 30.0
-      service_id: learning
+      service_id: oracle
       service_registry_address: ${str:null}
       setup:
         all_participants: ${list:[]}

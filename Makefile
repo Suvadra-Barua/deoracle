@@ -100,7 +100,7 @@ all-linters:
 fix-abci-app-specs:
 	export PYTHONPATH=${PYTHONPATH}:${PWD}
 	autonomy analyse fsm-specs --update --app-class WeatherOracleAbciApp --package packages/valory/skills/weather_oracle_abci/ || (echo "Failed to check weather_oracle_abci abci consistency" && exit 1)
-	autonomy analyse fsm-specs --update --app-class LearningChainedSkillAbciApp --package packages/valory/skills/learning_chained_abci/ || (echo "Failed to check learning_chained_abci abci consistency" && exit 1)
+	autonomy analyse fsm-specs --update --app-class OracleChainedSkillAbciApp --package packages/valory/skills/oracle_chained_abci/ || (echo "Failed to check oracle_chained_abci abci consistency" && exit 1)
 
 
 .PHONY: tm

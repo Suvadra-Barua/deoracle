@@ -31,7 +31,7 @@ def main() -> None:
     """Main"""
     load_dotenv()
 
-    with open(Path("learning_agent", "aea-config.yaml"), "r", encoding="utf-8") as file:
+    with open(Path("oracle_agent", "aea-config.yaml"), "r", encoding="utf-8") as file:
         config = list(yaml.safe_load_all(file))
 
         # Ledger RPCs
@@ -77,7 +77,7 @@ def main() -> None:
                 "weather_oracle_address"
             ] = f"${{str:{os.getenv('WEATHER_ORACLE_ADDRESS')}}}"  # type: ignore
 
-    with open(Path("learning_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
+    with open(Path("oracle_agent", "aea-config.yaml"), "w", encoding="utf-8") as file:
         yaml.dump_all(config, file, sort_keys=False)
 
 

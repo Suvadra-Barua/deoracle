@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------------
 
-"""This module contains the dialogues of the LearningAbciApp."""
+"""This module contains the dialogues of the WeatherOracleAbciApp."""
 
 from packages.valory.skills.abstract_round_abci.dialogues import (
     AbciDialogue as BaseAbciDialogue,
