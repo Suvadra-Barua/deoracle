@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeigmgzlbkdtehv3k6kpb4hmmzwmcypepn7uvwsbkgxxrkbn5ep4ehy
 fingerprint_ignore_patterns: []
-agent: valory/oracle_agent:0.1.0:bafybeicpwbpozpe2bulswranta3k4tqdldgwmbxgwh6ukljavmuaimzkua
+agent: valory/oracle_agent:0.1.0:bafybeidsjurgv4vdnsd4emlfy6cyethu25yamn4fexhyw5s673hfeyp6wi
 number_of_agents: 4
 deployment:
   agent:
@@ -93,6 +93,8 @@ extra:
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x0000000000000000000000000000000000000000}
         olas_token_address: ${OLAS_TOKEN_ADDRESS:str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
         weather_oracle_address: ''
+        from_block: ${str:0}
+        to_block: ${str:0}
     weatherstack_specs:
       args:
         api_id: weatherstack
@@ -150,6 +152,8 @@ extra:
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x0000000000000000000000000000000000000000}
         olas_token_address: ${OLAS_TOKEN_ADDRESS:str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
         weather_oracle_address: ''
+        from_block: ${str:0}
+        to_block: ${str:0}
     weatherstack_specs:
       args:
         api_id: weatherstack
@@ -209,6 +213,8 @@ extra:
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x0000000000000000000000000000000000000000}
         olas_token_address: ${OLAS_TOKEN_ADDRESS:str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
         weather_oracle_address: ''
+        from_block: ${str:0}
+        to_block: ${str:0}
     weatherstack_specs:
       args:
         api_id: weatherstack
@@ -266,6 +272,8 @@ extra:
         transfer_target_address: ${TRANSFER_TARGET_ADDRESS:str:0x0000000000000000000000000000000000000000}
         olas_token_address: ${OLAS_TOKEN_ADDRESS:str:0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f}
         weather_oracle_address: ''
+        from_block: ${str:0}
+        to_block: ${str:0}
     weatherstack_specs:
       args:
         api_id: weatherstack

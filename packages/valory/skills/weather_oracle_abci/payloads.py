@@ -22,6 +22,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from flask import request
+
 from packages.valory.skills.abstract_round_abci.base import BaseTxPayload
 
 
@@ -39,6 +41,7 @@ class RequestDataPullPayload(BaseTxPayload):
     """Represent a transaction payload for the RequestDataPullRound."""
 
     location: Optional[str]
+    request_id: Optional[int]
 
 
 @dataclass(frozen=True)

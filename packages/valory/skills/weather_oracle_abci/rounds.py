@@ -110,6 +110,11 @@ class SynchronizedData(BaseSynchronizedData):
         return self.db.get("request_location", None)
     
     @property
+    def request_id(self) -> Optional[int]:
+        """Get the requester query location."""
+        return self.db.get("request_id", None)
+    
+    @property
     def participant_to_request_data_round(self) -> DeserializedCollection:
         """Get the participants to the request data round."""
         return self._get_deserialized("participant_to_request_data_round")
@@ -129,6 +134,7 @@ class RequestDataPullRound(CollectSameUntilThresholdRound):
     # Selection keys for extracting specific fields
     selection_key = (
         get_name(SynchronizedData.request_location),
+        get_name(SynchronizedData.request_id),
     )
 
 class OracleDataPullRound(CollectSameUntilThresholdRound):
