@@ -54,7 +54,7 @@ It uses [Olas](https://olas.network/) agents and [Open Autonomy](https://github.
 
 4. Create a [Tenderly](https://tenderly.co/) account and from your dashboard create a fork of Gnosis chain (virtual testnet).
 
-5. From Tenderly, fund your agents and Safe with some xDAI and OLAS (`0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f`).
+5. From Tenderly, fund your agents and Safe with some xDAI .
 
 6. Make a copy of the env file:
 
@@ -63,21 +63,20 @@ It uses [Olas](https://olas.network/) agents and [Open Autonomy](https://github.
     ```
 7. Set up deoracle contracts:
     - Clone the [deoracle-contracts](https://github.com/Suvadra-Barua/deoracle-contracts.git) repo
-    - Set up the RPC in hardhat config
+    - Set up the RPC under `tenderly` in hardhat config
     - Run deploy script using the command `npx hardhat run scripts/deploy.ts --network tenderly` and get the deployed address
-    - Use the address in contractInteractions script
+    - Use the address in `scripts/contractInteractions.ts` script
 
 8. Fill in the required environment variables in .env. These variables are:
 - `ALL_PARTICIPANTS`: a list of your agent addresses. This will vary depending on whether you are running a single agent (`run_agent.sh` script) or the whole 4-agent service (`run_service.sh`)
 - `GNOSIS_LEDGER_RPC`: set it to your Tenderly fork Admin RPC. (Use same RPC you used in `deoracle-contracts` hardhat.config.ts
-- `COINGECKO_API_KEY`: you will need to get a free [Coingecko](https://www.coingecko.com/) API key.
 - `TRANSFER_TARGET_ADDRESS`: any random address to send funds to, can be any of the agents for example.
 - `SAFE_CONTRACT_ADDRESS_SINGLE`: the 1 out of 4 agents Safe address.
 - `SAFE_CONTRACT_ADDRESS`: the 3 out of 4 Safe address.
 - `WEATHER_ORACLE_ADDRESS`: deploy [deoracle-contracts](https://github.com/Suvadra-Barua/deoracle-contracts.git) to Tenderly and set the address here
 - `FROM_BLOCK`: event listening starts from this block
-- `TO_BLOCK`: event listen ends to this block
-- `WEATHERSTACK_PARAMETERS`:`'{"access_key":"","query":""}'`
+- `TO_BLOCK`: event listening ends to this block
+- `WEATHERSTACK_PARAMETERS`:`'{"access_key":"","query":""}'. [WeatherStack](https://weatherstack.com/)
 
 
 ### Run a single agent locally
