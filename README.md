@@ -1,6 +1,7 @@
-## Learning Service
+## Deoracle
 
-A service to learn about [Olas](https://olas.network/) agents and [Open Autonomy](https://github.com/valory-xyz/open-autonomy).
+A decentralized oracle is a system that provides external, real-world data to blockchain networks and smart contracts in a trustless and decentralized manner.
+It uses [Olas](https://olas.network/) agents and [Open Autonomy](https://github.com/valory-xyz/open-autonomy).
 
 
 ## System requirements
@@ -22,13 +23,13 @@ A service to learn about [Olas](https://olas.network/) agents and [Open Autonomy
 1. Clone this repo:
 
     ```
-    git clone git@github.com:valory-xyz/academy-learning-service.git
+    git clone https://github.com/Suvadra-Barua/deoracle.git
     ```
 
 2. Create the virtual environment:
 
     ```
-    cd academy-learning-service
+    cd deoracle
     poetry shell
     poetry install
     ```
@@ -68,6 +69,10 @@ A service to learn about [Olas](https://olas.network/) agents and [Open Autonomy
 - `TRANSFER_TARGET_ADDRESS`: any random address to send funds to, can be any of the agents for example.
 - `SAFE_CONTRACT_ADDRESS_SINGLE`: the 1 out of 4 agents Safe address.
 - `SAFE_CONTRACT_ADDRESS`: the 3 out of 4 Safe address.
+- `WEATHER_ORACLE_ADDRESS`: deploy [deoracle-contracts](https://github.com/Suvadra-Barua/deoracle-contracts.git) to Tenderly and set the address here
+- `FROM_BLOCK`: event listening starts from this block
+- `TO_BLOCK`: event listen ends to this block
+- `WEATHERSTACK_PARAMETERS`:`'{"access_key":"","query":""}'`
 
 
 ### Run a single agent locally
